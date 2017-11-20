@@ -3,8 +3,10 @@ let socket;
 
   let list_messages = document.querySelector("#list__messages");
   let message__user = document.querySelector("#message__user");
+  let get_chat_room = new URLSearchParams(window.location.search);
+  let room = get_chat_room.get("selected") || "chat";
 
-  socket = new WebSocket("ws://" + window.location.host + "/chat/");
+  socket = new WebSocket("ws://" + window.location.host + "/room/" + room + "/");
   socket.onmessage = function(e) {
       let data = JSON.parse(e.data);
       let template_html = ` <p><strong>${data.username}</strong> <span class="badge badge-primary">RH</span>: ${data.message}</p>`;
