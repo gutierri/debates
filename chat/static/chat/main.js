@@ -9,7 +9,8 @@ let socket;
   socket = new WebSocket("ws://" + window.location.host + "/room/" + room + "/");
   socket.onmessage = function(e) {
       let data = JSON.parse(e.data);
-      let template_html = ` <p><strong>${data.username}</strong> <span class="badge badge-primary">RH</span>: ${data.message}</p>`;
+      let groups = data.groups;
+      let template_html = ` <p><strong>${data.username}</strong> <span class="badge badge-primary">${groups}</span>: ${data.message}</p>`;
       list_messages.insertAdjacentHTML('beforeend', template_html);
   }
 

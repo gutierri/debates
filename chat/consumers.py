@@ -12,26 +12,26 @@ def ws_add(message):
     _, room = message['path'].strip('/').split('/')
     user_groups_room = list(message.user.groups.values_list('id', flat=True))
     message.channel_session['room'] = room
+    message.channel_session['user_groups'] =  list(message.user.groups.values_list('name', flat=True))
 
 
     relations_groups_room = list(Room.objects.get(room_slug=room).groups_permissions.values_list('id', flat=True))
 
-    if relations_groups_room:
-        l = [p for p in relations_groups_room if p in user_groups_room]
-        if not l:
-            # Usuários que não estão relacionados com a sala nao podem
-            # ler mesangens
-            message.reply_channel.send({"accept": False })
+    if not message.user.is_staff and relations_groups_room:
+        permission = [p for p in relations_groups_room if p in user_groups_room]
+        if not permission:
+            message.reply_channel.send({"close": True, "accept": False })
             return
 
-
+    if message.user.is_staff:
+        message.channel_session['user_groups'].append("Staff")
 
     message.reply_channel.send({"accept": True })
     Group(room).add(message.reply_channel)
     Group(room).send({
         "text": json.dumps({
             'username': message.user.username,
-            'groups': None,
+            'groups': message.channel_session['user_groups'],
             'message': "Join!"
         })
     })
@@ -43,7 +43,7 @@ def ws_message(message):
     Group(message.channel_session['room']).send({
         "text": json.dumps({
             'username': message.user.username,
-            'groups': list(message.user.groups.values_list('id', flat=True)),
+            'groups': message.channel_session['user_groups'],
             'message': data['message']
         })
     })
