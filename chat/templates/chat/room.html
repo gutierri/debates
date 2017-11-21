@@ -2,25 +2,19 @@
 {% load static %}
 
 {% block content %}
-<div class="container-fluid h-100">
-  <div class="row justify-content-center h-100">
+<main class="col-12">
+    <section id="list__messages"  style="position: absolute; left: 15px; right: 0; top: 0; bottom: 54px; padding-bottom: 56px; max-height: 100%; overflow: auto;">
 
-
-    <main class="col-12">
-        <section id="list__messages"  style="position: absolute; left: 15px; right: 0; top: 0; bottom: 54px; padding-bottom: 56px; max-height: 100%; overflow: auto;">
-
-        </section>
-        <div style="position: absolute;left: 0;right: 0;bottom: 0;">
-            <nav class="navbar navbar-light bg-light col">
-                <div class="input-group">
-                    <span class="input-group-addon">You</span>
-                    <input type="text" id="message__user" class="form-control" placeholder="Text...">
-                </div>
-            </nav>
-        </div>
-    </main>
-  </div>
-</div>
+    </section>
+    <div style="position: absolute;left: 0;right: 0;bottom: 0;">
+        <nav class="navbar navbar-light bg-light col">
+            <div class="input-group">
+                <span class="input-group-addon">You</span>
+                <input type="text" id="message__user" class="form-control" placeholder="Text...">
+            </div>
+        </nav>
+    </div>
+</main>
 {% endblock %}
 
 {% block footer-scripts %}
